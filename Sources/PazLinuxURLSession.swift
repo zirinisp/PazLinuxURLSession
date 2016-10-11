@@ -17,7 +17,7 @@ public class URLSession {
         return URLSession()
     }()
     
-    public func dataTaskWithURL(url: URL, completion: @escaping HTTPCompletionFunc) -> HTTPSessionDataTask {
+    public func dataTask(with url: URL, completionHandler completion: @escaping HTTPCompletionFunc) -> HTTPSessionDataTask {
         return HTTPSessionDataTask(configuration: configuration, URL: url, completion: completion)
     }
 }
