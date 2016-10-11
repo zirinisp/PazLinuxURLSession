@@ -50,16 +50,10 @@ public class HTTPSessionDataTask {
         if let message = message {
             userInfo[NSLocalizedDescriptionKey] = message
         }
-        return NSError(domain:"org.vu0.RequestSession", code: 23, userInfo: userInfo)
+        return NSError(domain:"com.pazlabs.HTTPSessionDataTask", code: 23, userInfo: userInfo)
     }
     
     private func perform() {
-        #if os(Linux)
-            let urlString = URL.absoluteString!
-        #else
-            let urlString = URL.absoluteString
-        #endif
-        
         let headers = configuration.HTTPAdditionalHeaders
         
         guard let scheme = URL.scheme, let host = URL.host, let portInt = URL.port else {
