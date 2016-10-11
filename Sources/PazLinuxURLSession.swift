@@ -3,7 +3,7 @@
 import Foundation
 import SimpleHttpClient
 import KituraNet
-import Glibc
+//import Glibc
 
 
 public class HTTPSession {
@@ -27,7 +27,7 @@ public class HTTPSessionConfiguration {
     }
 }
 
-public typealias HTTPCompletionFunc = ((NSData?, HTTPURLResponse?, NSError?) -> Void)
+public typealias HTTPCompletionFunc = ((Data?, HTTPURLResponse?, NSError?) -> Void)
 
 public class HTTPSessionDataTask {
     let completion: HTTPCompletionFunc
@@ -72,13 +72,13 @@ public class HTTPSessionDataTask {
         
         let httpResource = HttpResource(schema: scheme, host: host, port: port, path: pathExtension)
 
-        HttpClient.get(resource: httpResource, headers: headers) { (error, status, headers, data) in
+        HttpClient.get(resource: httpResource, headers: headers) { [weak self] (error, status, headers, data) in
             if error != nil {
                 print("Failure")
             } else if let _ = data {
                 print("Success")
             }
-            completion(data, nil, error)
+            self?.completion(data, nil, self?.makeError(message: error?.localizedDescription))
         }
     }
     
@@ -91,13 +91,5 @@ func async(block: (Void) -> Void) {
     block()
 }
 
-extension String {
-    func dataUsingEncoding(encoding: UInt) -> NSData? {
-        self.withCString { (bytes) in
-            return NSData(bytes: bytes, length: Int(strlen(bytes)))
-        }
-        return nil
-    }
-}
-    
+
 #endif
