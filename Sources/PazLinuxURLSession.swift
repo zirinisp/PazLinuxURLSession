@@ -6,12 +6,16 @@ import KituraNet
 //import Glibc
 
 
-public class HTTPSession {
+public class URLSession {
     let configuration: HTTPSessionConfiguration
     
-    public init(configuration: HTTPSessionConfiguration) {
+    public init(configuration: HTTPSessionConfiguration = HTTPSessionConfiguration.defaultSessionConfiguration()) {
         self.configuration = configuration
     }
+    
+    public static var shared: URLSession = {
+        return URLSession()
+    }()
     
     public func dataTaskWithURL(url: URL, completion: @escaping HTTPCompletionFunc) -> HTTPSessionDataTask {
         return HTTPSessionDataTask(configuration: configuration, URL: url, completion: completion)
